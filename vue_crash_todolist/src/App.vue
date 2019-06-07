@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Todos v-bind:todos="todos" />
+    <Todos v-bind:todos="todos" v-on:del-todo="deleteTodo" />
   </div>
 </template>
 
@@ -31,6 +31,14 @@ export default {
           completed: false
         }
       ]
+    }
+  },
+  methods: {
+    deleteTodo(id) {
+      // filter() method creates a new array with all elements that pass the test implemented by the provided function.
+      // array.filter (callback[, thisObject]);
+      // return element !== id
+      this.todos = this.todos.filter(todo => todo.id !== id);
     }
   }
 }
