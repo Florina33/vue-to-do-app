@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import uuid from 'uuid';
+// import uuid from 'uuid';
 
 export default {
     name: "AddTodo",
@@ -24,7 +24,7 @@ export default {
                 // How to generate unique ID
                 // have to install - npm i uuid
                 // Then generate your uuid version of choice ...
-                id: uuid.v4(),
+                // id: uuid.v4(),
                 title: this.title,  // from input  v-model="title"
                 completed: false
             }
