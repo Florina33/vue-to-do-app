@@ -27,49 +27,52 @@ export default {
   },
   methods: {
     deleteTodo(id) {
-      // filter() method creates a new array with all elements that pass the test implemented by the provided function.
-      // array.filter (callback[, thisObject]);
-      // return element !== id
-      this.todos = this.todos.filter(todo => todo.id !== id);
+      axios.delete(`https://jsonplaceholder.typicode.com/todos/${id}`)
+        .then((this.todos = this.todos.filter(todo => todo.id !== id))) // filter() method creates a new array with all elements that pass the test implemented by the provided function. // array.filter (callback[, thisObject]); // return element !== id
+        .catch(err => console.log(err));
     },
-    addTodo(newTodo){
+    addTodo(newTodo) {
       const { title, completed } = newTodo;
-      // Create new array from existing array + more element (Spread Operator)
-      this.todos = [...this.todos, newTodo];
+
+      axios.post("https://jsonplaceholder.typicode.com/todos", {
+          title,
+          completed
+        })
+        .then(res => (this.todos = [...this.todos, res.data])) // Create new array from existing array + more element (Spread Operator)
+        .catch(err => console.log(err));
     }
   },
   created() {
-    // get and display data from the API using axios, based on the HTTP client's promise
-    axios.get('https://jsonplaceholder.typicode.com/todos?_limit=5')
-    .then(res => this.todos = res.data)
-    .catch(err => console.log(err))
-     .finally(() => (this.loading = false));
+    axios.get("https://jsonplaceholder.typicode.com/todos?_limit=5") // get and display data from the API using axios, based on the HTTP client's promise
+      .then(res => (this.todos = res.data))
+      .catch(err => console.log(err))
+      .finally(() => (this.loading = false));
   }
 };
 </script>
 
 <style>
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-  body {
-    font-family: Arial, Helvetica, sans-serif;
-    line-height: 1.4;
-  }
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.4;
+}
 
-  .btn {
-    display: inline-block;
-    border: none;
-    background: #555;
-    color: #fff;
-    padding: 7px 20px;
-    cursor: pointer;
-  }
+.btn {
+  display: inline-block;
+  border: none;
+  background: #555;
+  color: #fff;
+  padding: 7px 20px;
+  cursor: pointer;
+}
 
-  .btn:hover {
-    background: #667;
-  }
+.btn:hover {
+  background: #667;
+}
 </style>
