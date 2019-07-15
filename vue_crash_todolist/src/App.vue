@@ -1,8 +1,18 @@
 <template>
   <div id="app">
-    <Header/>
-    <AddTodo v-on:add-todo="addTodo"/>
-    <Todos v-bind:todos="todos" v-on:del-todo="deleteTodo"/>
+    <Header />
+    <!-- <router-view/> -->
+    <nav>
+      <router-link to="/">Home</router-link>
+      <router-link to="/register">Register</router-link>
+      <router-link to="/login">Login</router-link>
+    </nav>
+    <router-view />
+
+        <!-- <router-view></router-view> -->
+
+    <AddTodo v-on:add-todo="addTodo" />
+    <Todos v-bind:todos="todos" v-on:del-todo="deleteTodo" />
   </div>
 </template>
 
@@ -11,6 +21,9 @@ import Header from "./components/layout/Header";
 import Todos from "./components/Todos";
 import AddTodo from "./components/AddTodo";
 import axios from "axios";
+
+// import router from './router'
+// import store from './store'
 
 export default {
   name: "app",
@@ -27,14 +40,16 @@ export default {
   },
   methods: {
     deleteTodo(id) {
-      axios.delete(`https://jsonplaceholder.typicode.com/todos/${id}`)
+      axios
+        .delete(`https://jsonplaceholder.typicode.com/todos/${id}`)
         .then((this.todos = this.todos.filter(todo => todo.id !== id))) // filter() method creates a new array with all elements that pass the test implemented by the provided function. // array.filter (callback[, thisObject]); // return element !== id
         .catch(err => console.log(err));
     },
     addTodo(newTodo) {
       const { title, completed } = newTodo;
 
-      axios.post("https://jsonplaceholder.typicode.com/todos", {
+      axios
+        .post("https://jsonplaceholder.typicode.com/todos", {
           title,
           completed
         })
@@ -43,7 +58,8 @@ export default {
     }
   },
   created() {
-    axios.get("https://jsonplaceholder.typicode.com/todos?_limit=5") // get and display data from the API using axios, based on the HTTP client's promise
+    axios
+      .get("https://jsonplaceholder.typicode.com/todos?_limit=5") // get and display data from the API using axios, based on the HTTP client's promise
       .then(res => (this.todos = res.data))
       .catch(err => console.log(err))
       .finally(() => (this.loading = false));
