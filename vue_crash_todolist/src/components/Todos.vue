@@ -23,6 +23,8 @@ export default {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  width: 90%;
+  margin: 30px auto;
 }
 
 .todos-item {
