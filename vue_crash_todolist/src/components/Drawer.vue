@@ -1,6 +1,20 @@
 <template>
   <div>
-    <AddTodo v-on:add-todo="addTodo" /> 
+    <!-- <div v-if="drawerShow" class="drawer-wrap" @click="$emit('hide-drawer', drawerShow)"> -->
+    <div class="drawer-wrap" @click="$emit('hide-drawer', drawerShow)">
+      
+    </div>
+
+      <div class="drawer">
+        <AddTodo
+          :todo="todo"
+          v-on:add-todo="$emit('add-todo', $event)"
+          v-on:edit-todo="$emit('edit-todo', $event)"
+        />
+
+        <button v-bind:class="['btn_drawer_close', { active: drawerShow }]" @click="hideDrawer()"></button>
+      </div>
+    
   </div>
 </template>
 
@@ -11,37 +25,21 @@ import axios from "axios";
 
 export default {
   name: "drawer",
+  // props: {
+  //   drawerShow: Boolean
+  // },
   components: {
     Todos,
     AddTodo
   },
+  props: ["todo"],
 
   data() {
     return {
-    //   todos: [],
-      loading: true
+      //  todos: [],
+      loading: true,
+      drawerShow: false
     };
-  },
-
-  methods: {
-    // deleteTodo(id) {
-    //   axios
-    //     .delete(`https://jsonplaceholder.typicode.com/todos/${id}`)
-    //     .then((this.todos = this.todos.filter(todo => todo.id !== id))) // filter() method creates a new array with all elements that pass the test implemented by the provided function. // array.filter (callback[, thisObject]); // return element !== id
-    //     .catch(err => console.log(err));
-    // },
-    addTodo(newTodo) {
-      const { title, completed } = newTodo;
-
-      axios
-        .post("https://jsonplaceholder.typicode.com/todos", {
-          title,
-          completed
-        })
-        .then(res => (this.todos = [...this.todos, res.data])) // Create new array from existing array + more element (Spread Operator)
-        .catch(err => console.log(err));
-    },
-
   },
 
   created() {
@@ -50,7 +48,63 @@ export default {
       .then(res => (this.todos = res.data))
       .catch(err => console.log(err))
       .finally(() => (this.loading = false));
+  },
+  methods: {
+    switchDrawer() {
+      this.drawerShow = !this.drawerShow;
+    },
+
+    showDrawer() {
+      this.drawerShow = true;
+    },
+
+    hideDrawer() {
+      this.drawerShow = false;
+    }
   }
 };
-
 </script>
+
+<style scoped>
+.drawer-wrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: black;
+  opacity: 0.4;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.drawer {
+  background: #eaeaea;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+  opacity: 0.98;
+  padding: 30px 2%;
+  max-width: 500px;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
+
+.btn_drawer_close {
+  position: absolute;
+  z-index: 15;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 10px;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+</style>
+

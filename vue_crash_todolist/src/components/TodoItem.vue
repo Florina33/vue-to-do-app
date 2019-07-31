@@ -1,7 +1,8 @@
 <template>
   <!-- if todo.completed == true add class 'is-complete' in this item -->
-  <div class="todo-item" v-bind:class="{'is-complete':todo.completed}">
-    <button @click="$emit('edit-todo', todo.id)" class="edit">
+  <!-- <div class="todo-item" v-bind:class="{'is-complete':todo.completed}"> -->
+  <div class="todo-item">
+    <button @click="$emit('edit-todo', todo)" class="edit">
       <img src="../assets/icon_edit.png" alt="">
     </button>
     <!-- on click event "del-todo" type $emit -->
@@ -9,7 +10,7 @@
     <button @click="$emit('del-todo', todo.id)" class="del">
        <img src="../assets/icon_delete.png" alt="">
     </button>
-    <input type="checkbox" v-on:change="markComplete" />
+    <!-- <input type="checkbox" v-on:change="markComplete" /> -->
     <h3>{{todo.title}}</h3>
     <!-- <p>{{}}</p> -->
   </div>
@@ -20,10 +21,10 @@ export default {
   name: "TodoItem",
   props: ["todo"],
   methods: {
-    markComplete() {
-      this.todo.completed = !this.todo.completed;
-      console.log(this.todo.completed);
-    }
+    // markComplete() {
+    //   this.todo.completed = !this.todo.completed;
+    //   console.log(this.todo.completed);
+    // }
   }
 };
 </script>

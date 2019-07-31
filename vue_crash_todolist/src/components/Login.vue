@@ -1,21 +1,20 @@
 <template>
   <div class="form_wrap">
-    <form @submit.prevent="someAction()" class="login_form">
+    <form @submit.prevent="formSubmit" class="login_form">
       <label>email:</label>
       <input
         v-model="email"
-        type="email"
-        @blur="isEmailTouched = true"
+        type="text"
         :class="{ error: isEmailError }"
       />
       <div class="error_msg" v-if="isEmailError">Поле заполено неверно</div>
-
-      <button :disabled="!isEmailValid" type="submit" class="btn btn_submit">Отправить форму</button>
+      <button type="submit" class="btn btn_submit">Отправить форму</button>
     </form>
   </div>
 </template>
 
 <script>
+
 const emailCheckRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/;
 // const emailCheckRegex = /^...Длинный RegExp для валидации Email...$/;
 
@@ -23,29 +22,33 @@ export default {
   data() {
     return {
       email: null,
-      isEmailTouched: false
+      isEmailError: false
     };
   },
 
   computed: {
     isEmailValid() {
       return emailCheckRegex.test(this.email);
-    },
-    // isEmailValid: function (email) {
-    //   var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    //   return re.test(email);
-    // }
-
-    isEmailError() {
-      return !this.isEmailValid && this.isEmailTouched;
     }
   },
 
   methods: {
-    someAction() {
-      this.$router.push("/");
+    formSubmit() {
+        // debugger;
+
+        if (!this.isEmailValid){
+          this.isEmailError = true;
+          return;
+        }
+        this.$router.push("/");
     }
+
+    // isEmailValid: function (email) {
+    //   var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    //   return re.test(email);
+    // }
   }
+
 };
 </script>
 
@@ -76,4 +79,10 @@ label {
   font-size: 15px;
   line-height: 2;
 }
+
+.error_msg {
+  color: red;
+  font-size: 17px;
+}
+
 </style>
